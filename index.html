@@ -249,10 +249,15 @@ LoadGraph();
 		
 			RISE.People[rowNum - 1] = {};
 			var fullName = data[row][0];
-			if(fullName == "Jeremy Proffitt")
+			
+			if(RISE.CustomNames[fullName]){
+				name = RISE.CustomNames[fullName];
+			}
+			/*if(fullName == "Jeremy Proffitt")
 				name = "JP";
 			else if(fullName == "Doug Nottage")
 				name = "DougN";
+				*/
 			else {
 				fullName = fullName.split(" ");
 				name = fullName[0];
