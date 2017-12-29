@@ -22,6 +22,7 @@
 
 .node-info {
 	fill: #ccc;
+	z-index: 1000;
 }
 
 .node-info text {
@@ -280,6 +281,7 @@ function LoadGraph(){
 			
 			var curNode = d3.select(this).select('.node-info');
 			curNode.attr('visibility', 'visible');
+			
 		});
 	node.on('mouseout', function(d){
 			//console.log(d);
@@ -620,169 +622,8 @@ function linkDistance(link, index){
 	if(distance < (graph.nodeRadius + graph.nodeStrokeWidth) * 2){
 		distance = (graph.nodeRadius + graph.nodeStrokeWidth) * 2;
 	}
-<<<<<<< HEAD
 	return distance;
 }
-=======
-  
-	var svg = d3.select('body').append('svg')
-      .attr('width', width)
-      .attr('height', height);
-
-	 var defs = svg.append('defs');
-	 var rect = defs.append('rect')
-	 .attr('id', 'rect')
-	 .attr('x', '-25')
-	 .attr('y', '-25')
-	 .attr('width','50')
-	 .attr('height','50')
-	 .attr('rx','25');
-	 
-	 var clip = defs.append('clipPath')
-	 .attr('id','clip');
-	 
-	 clip.append('use')
-	 .attr('xlink:href','#rect');
-	 
-	 
-	  //NOTE: var force
-	force = d3.layout.force() 
-		.size([width, height])
-		.nodes(nodes)
-		.links(links)
-		.charge(-1000)
-		.chargeDistance(graph.nodeRadius * 4)
-		.linkDistance(linkDistance);
-
-  //force.linkDistance(width/2);
-		
-  
-	var link = svg.selectAll('.link')
-		.data(links)
-		.enter().append('line')
-		.attr('stroke-opacity', function(d){
-			source = d.source;
-			target = d.target;
-			distance = RISE.Distances[source][target];
-			if(distance == 0)
-				return 1;
-			else
-				return 1 / Math.log(distance + 1);})
-		.attr('class', 'link');
-
-	link.append("text")
-		.attr("dx", 12)
-		.attr("dy", ".35em")
-		.text(function(d){
-			return "0";
-		});
-  
-	var node = svg.selectAll('.node')
-		.data(nodes)
-		.enter().append('g') //circle')
-		.attr('class', 'node')
-		.call(force.drag);
-
-	/*node.append("text")
-		.attr("dx", -12)
-		.attr("dy", ".35em")
-		.text(function(d){return d.name});
-	*/
-	
-	node.append("image")
-		.attr("xlink:href", function(d) { return d.name + ".png" })
-		.attr('clip-path', 'url(#clip)')
-		.attr("x", graph.nodeRadius * -1)
-		.attr("y", graph.nodeRadius * -1)
-		.attr("width", graph.nodeRadius * 2)
-		.attr("height", graph.nodeRadius * 2);
-
-	var animating = false;
-
-	var animationStep = 100;
-
-	force.on('tick', function() {
-
-    node.transition().ease('linear').duration(animationStep)
-        .attr('cx', function(d) { return d.x; })
-        .attr('cy', function(d) { return d.y; });
-
-    link.transition().ease('linear').duration(animationStep)
-        .attr('x1', function(d) { return d.source.x; })
-        .attr('y1', function(d) { return d.source.y; })
-        .attr('x2', function(d) { return d.target.x; })
-        .attr('y2', function(d) { return d.target.y; });
-
-	//console.log(nodes);
-
-    force.stop();
-
-
-    if (animating) {
-        setTimeout(
-            function() { force.start(); },
-            animationStep
-        );
-    }
-
-});
-
-// Now let's take care of the user interaction controls.
-// We'll add functions to respond to clicks on the individual
-// buttons.
-
-// When the user clicks on the "Advance" button, we
-// start the force layout (The tick handler will stop
-// the layout after one iteration.)
-
-d3.select('#advance').on('click', force.start);
-
-// When the user clicks on the "Play" button, we're
-// going to run the force layout until it concludes.
-
-d3.select('#slow').on('click', function() {
-
-    // Since the buttons don't have any effect any more,
-    // disable them.
-
-    d3.selectAll('button').attr('disabled','disabled');
-
-    // Indicate that the animation is in progress.
-
-    animating = true;
-
-    // Get the animation rolling
-
-    force.start();
-
-});
-  
-  force.on('end', function() {
-
-     
-      node.attr('r', graph.nodeRadius)
-          .attr('x', function(d) { return d.x; })
-          .attr('y', function(d) { return d.y; });
-
-      // We also need to update positions of the links.
-      // For those elements, the force layout sets the
-      // `source` and `target` properties, specifying
-      // `x` and `y` values in each case.
-
-      link.attr('x1', function(d) { return d.source.x; })
-          .attr('y1', function(d) { return d.source.y; })
-          .attr('x2', function(d) { return d.target.x; })
-          .attr('y2', function(d) { return d.target.y; });
-
-		node.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
-  });
-
-  // Okay, everything is set up now so it's time to turn
-  // things over to the force layout. Here we go.
-
-  force.start();
-} //end function LoadGraph()
->>>>>>> origin/master
 
 </script>
 </body></html>
